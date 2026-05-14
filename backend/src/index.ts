@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import requestLogger from "./middleware/requestLogger";
 import errorHandler from "./middleware/errorHandler";
 import racksRouter from "./modules/racks/racks.routes";
+import equipmentRouter from "./modules/equipment/equipment.routes";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ app.use(requestLogger);
 
 // Racks Routes
 app.use("/api/racks", racksRouter);
+
+// Equipment Routes
+app.use("/api/equipment", equipmentRouter);
 
 // Health check
 app.get("/healthz", (req, res) => {
