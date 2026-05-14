@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import requestLogger from "./middleware/requestLogger";
 import errorHandler from "./middleware/errorHandler";
+import racksRouter from "./modules/racks/racks.routes";
 
 dotenv.config();
 
@@ -26,6 +27,9 @@ app.use(cookieParser());
 
 // Request logging
 app.use(requestLogger);
+
+// Racks Routes
+app.use("/api/racks", racksRouter);
 
 // Health check
 app.get("/healthz", (req, res) => {
