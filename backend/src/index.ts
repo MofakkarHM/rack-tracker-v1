@@ -40,7 +40,7 @@ app.get("/healthz", (req, res) => {
   res.json({ success: true, message: "Server is healthy" });
 });
 
-// Error handler (must be last)
+// Error handler
 app.use(errorHandler);
 
 app.listen(PORT, () => {
