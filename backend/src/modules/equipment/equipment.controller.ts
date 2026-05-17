@@ -38,7 +38,7 @@ class EquipmentController {
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const parsed = createEquipmentSchema.safeParse(req.body);
+      const parsed = await createEquipmentSchema.safeParseAsync(req.body);
       if (!parsed.success) {
         res.status(400).json({
           success: false,

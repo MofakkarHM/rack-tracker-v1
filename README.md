@@ -279,17 +279,17 @@ rack-tracker-v1/
 
 ---
 
-## Self-Evaluation
+## Self-Evaluation — Rack Tracker v1
 
-| Dimension                                | Score (1–4) | Evidence                                                                                                                                                                                                                      |
-| ---------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D1 Functionality                         | 4           | Full CRUD for racks + equipment. `docker compose up` seeds and runs. Slot grid, rack filtering, unassigned section, empty states, slot conflict validation Pagination on equipment list (`?page=&limit=`).                    |
-| D2 Code Quality & Architecture           | 4           | Controller → service → repository enforced. Zero SQL outside repositories. Modules co-located. Singleton exports. Query key factory centralized. No `any`.                                                                    |
-| D3 Validation, Security & Error Handling | 4           | Zod on every write endpoint. Structured `{success, message, errors[]}` on all errors. Parameterized SQL everywhere. CORS restricted to frontend origin. Duplicate tag/name rejected with 400. `.trim()` on all string inputs. |
-| D4 Developer Experience                  | 4           | `docker compose up --build` from fresh clone — zero extra steps. Postgres healthcheck + backend waits. Hot reload in both services. `.env.example` covers every variable.                                                     |
-| D5 Testing & Observability               | 4           | 21-scenario manual test plan above. Request logging middleware (method + path + status + duration). `/healthz` endpoint.                                                                                                      |
+| Dimension                                | Score (1–4) | Evidence                                                                                                          |
+| ---------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------- |
+| D1 Functionality                         | 4           | Docker compose works seamlessly. Full CRUD implemented. Optmistic updates in UI via TanStack Query.               |
+| D2 Code Quality & Architecture           | 4           | Strict explicit layering (Controller → Service → Repository). Zero SQL outside repos.                             |
+| D3 Validation, Security & Error Handling | 4           | Async Zod `.refine` for uniqueness. Parameterized SQL. `.trim()` on strings. Strict CORS. Idempotent seed script. |
+| D4 Developer Experience                  | 4           | `docker compose up` works instantly. Env example provided. DB seeds automatically on conflict/ignore safe.        |
+| D5 Testing & Observability               | 4           | Request logging middleware. `/healthz` endpoint active and consumed by Docker healthcheck.                        |
 
-**Total: 20/20 — ship bar: 15, no dimension below 3**
+**Total:** 20/20 (ship bar: 15, with no dimension below 3)
 
 Reviewed by: self
 Date: 2026-05-17

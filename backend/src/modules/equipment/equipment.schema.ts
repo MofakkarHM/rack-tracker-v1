@@ -1,4 +1,5 @@
 import { z } from "zod";
+import equipmentRepository from "./equipment.repository";
 
 export const createEquipmentSchema = z
   .object({
@@ -22,6 +23,14 @@ export const createEquipmentSchema = z
       return hasRack === hasSlot;
     },
     { message: "rack_id and slot_number must both be set or both be null" },
+  )
+  .refine(
+    async (data) => {
+      //aync database check for tag uniqueness
+      const existing = await equipmentRepository.findByTag(data.tag);
+      return !existing;
+    },
+    { message: "Equipment with this tag already exists", path: ["tag"] },
   );
 
 export const updateEquipmentSchema = z

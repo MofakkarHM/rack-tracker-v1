@@ -25,6 +25,7 @@ INSERT INTO racks (name, location, total_slots) VALUES
   ('Rack-A2', 'Data Center 1 - Row A', 42),
   ('Rack-B1', 'Data Center 1 - Row B', 24),
   ('Rack-C1', 'Data Center 2 - Row C', 12);
+ON CONFLICT (name) DO NOTHING;
 
 -- Seed equipment
 INSERT INTO equipment (name, type, make, tag, rack_id, slot_number) VALUES
@@ -40,3 +41,4 @@ INSERT INTO equipment (name, type, make, tag, rack_id, slot_number) VALUES
   ('Access Switch 01',   'switch',  'Juniper','TAG-010', 4, 1),
   ('Unassigned Server',  'server',  'Dell',   'TAG-011', NULL, NULL),
   ('Spare Switch',       'switch',  'Cisco',  'TAG-012', NULL, NULL);
+ON CONFLICT (tag) DO NOTHING;
