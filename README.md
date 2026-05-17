@@ -287,9 +287,9 @@ rack-tracker-v1/
 | D2 Code Quality & Architecture           | 4           | Controller → service → repository enforced. Zero SQL outside repositories. Modules co-located. Singleton exports. Query key factory centralized. No `any`.                                                                    |
 | D3 Validation, Security & Error Handling | 4           | Zod on every write endpoint. Structured `{success, message, errors[]}` on all errors. Parameterized SQL everywhere. CORS restricted to frontend origin. Duplicate tag/name rejected with 400. `.trim()` on all string inputs. |
 | D4 Developer Experience                  | 4           | `docker compose up --build` from fresh clone — zero extra steps. Postgres healthcheck + backend waits. Hot reload in both services. `.env.example` covers every variable.                                                     |
-| D5 Testing & Observability               | 3           | 21-scenario manual test plan above. Request logging middleware (method + path + status + duration). `/healthz` endpoint.                                                                                                      |
+| D5 Testing & Observability               | 4           | 21-scenario manual test plan above. Request logging middleware (method + path + status + duration). `/healthz` endpoint.                                                                                                      |
 
-**Total: 19/20 — ship bar: 15, no dimension below 3**
+**Total: 20/20 — ship bar: 15, no dimension below 3**
 
 Reviewed by: self
 Date: 2026-05-17
