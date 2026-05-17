@@ -35,3 +35,11 @@ export interface UpdateEquipmentInput {
   rack_id?: number | null;
   slot_number?: number | null;
 }
+
+export interface PaginatedEquipmentResponse {
+  data: Equipment[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}

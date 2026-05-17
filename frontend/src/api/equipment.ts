@@ -3,6 +3,7 @@ import type {
   Equipment,
   CreateEquipmentInput,
   UpdateEquipmentInput,
+  PaginatedEquipmentResponse,
 } from "../types/equipment";
 
 export const equipmentApi = {
@@ -31,5 +32,13 @@ export const equipmentApi = {
 
   delete: async (id: number): Promise<void> => {
     await api.delete(`/api/equipment/${id}`);
+  },
+
+  getPaginated: async (
+    page: number,
+    limit: number,
+  ): Promise<PaginatedEquipmentResponse> => {
+    const res = await api.get(`/api/equipment?page=${page}&limit=${limit}`);
+    return res.data;
   },
 };

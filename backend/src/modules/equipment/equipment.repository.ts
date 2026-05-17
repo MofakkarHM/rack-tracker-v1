@@ -50,6 +50,20 @@ class EquipmentRepository {
     return (result.rowCount ?? 0) > 0;
   }
 
+  async findAllPaginated(page: number, limit: number): Promise<Equipment[]> {
+    const offset = (page - 1) * limit;
+    const result = await pool.query<Equipment>(
+      `SELECT * FROM equipment ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+      [limit, offset],
+    );
+    return result.rows;
+  }
+
+  async count(): Promise<number> {
+    const result = await pool.query(`SELECT COUNT(*) FROM equipment`);
+    return parseInt(result.rows[0].count, 10);
+  }
+
   async create(dto: CreateEquipmentDto): Promise<Equipment> {
     const result = await pool.query<Equipment>(
       `INSERT INTO equipment (name, type, make, tag, rack_id, slot_number)

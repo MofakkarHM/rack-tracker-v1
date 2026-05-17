@@ -4,6 +4,7 @@ import { queryKeys } from "../lib/queryKeys";
 import type {
   CreateEquipmentInput,
   UpdateEquipmentInput,
+  PaginatedEquipmentResponse,
 } from "../types/equipment";
 
 export function useEquipment() {
@@ -41,5 +42,12 @@ export function useDeleteEquipment() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.equipment.all });
     },
+  });
+}
+
+export function usePaginatedEquipment(page: number, limit: number) {
+  return useQuery<PaginatedEquipmentResponse>({
+    queryKey: [...queryKeys.equipment.all, "paginated", page, limit],
+    queryFn: () => equipmentApi.getPaginated(page, limit),
   });
 }

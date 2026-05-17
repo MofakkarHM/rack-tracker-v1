@@ -9,6 +9,31 @@ class EquipmentService {
     return equipmentRepository.findAll();
   }
 
+  async getAllPaginated(
+    page: number,
+    limit: number,
+  ): Promise<{
+    data: Equipment[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
+    const safePage = Math.max(1, page);
+    const safeLimit = Math.min(100, Math.max(1, limit));
+    const [data, total] = await Promise.all([
+      equipmentRepository.findAllPaginated(safePage, safeLimit),
+      equipmentRepository.count(),
+    ]);
+    return {
+      data,
+      total,
+      page: safePage,
+      limit: safeLimit,
+      totalPages: Math.ceil(total / safeLimit),
+    };
+  }
+
   async getById(id: number): Promise<Equipment> {
     const equipment = await equipmentRepository.findById(id);
     if (!equipment) {

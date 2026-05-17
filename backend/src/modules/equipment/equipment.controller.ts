@@ -8,8 +8,16 @@ import {
 class EquipmentController {
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const equipment = await equipmentService.getAll();
-      res.json({ success: true, data: equipment });
+      const page = parseInt(req.query.page as string) || 0;
+      const limit = parseInt(req.query.limit as string) || 0;
+
+      if (page && limit) {
+        const result = await equipmentService.getAllPaginated(page, limit);
+        res.json({ success: true, ...result });
+      } else {
+        const equipment = await equipmentService.getAll();
+        res.json({ success: true, data: equipment });
+      }
     } catch (err) {
       next(err);
     }

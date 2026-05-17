@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { useEquipment, useDeleteEquipment } from "../hooks/useEquipment";
+import {
+  useEquipment,
+  useDeleteEquipment,
+  usePaginatedEquipment,
+} from "../hooks/useEquipment";
 import { useRacks } from "../hooks/useRacks";
 import RackGrid from "../components/racks/RackGrid";
 import EquipmentFormModal from "../components/equipment/EquipmentFormModal";
 import Button from "../components/ui/Button";
 import Badge from "../components/ui/Badge";
+import Pagination from "../components/ui/Pagination";
 import type { Equipment } from "../types/equipment";
 import type { Rack } from "../types/rack";
 
@@ -34,6 +39,9 @@ export default function EquipmentPage({ selectedRack }: Props) {
   const [activeRackId, setActiveRackId] = useState<number | null>(
     selectedRack?.id ?? null,
   );
+  const [page, setPage] = useState(1);
+  const LIMIT = 5;
+  const { data: paginated } = usePaginatedEquipment(page, LIMIT);
 
   function handleSlotClick(
     rackId: number,
@@ -133,6 +141,74 @@ export default function EquipmentPage({ selectedRack }: Props) {
             />
           ))}
       </div>
+
+      {/* Paginated full list */}
+      {activeRackId === null && paginated && (
+        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-100">All Equipment</h3>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {paginated.total} items · page {paginated.page} of{" "}
+                {paginated.totalPages}
+              </p>
+            </div>
+            <span className="text-xs text-gray-500">
+              Showing {LIMIT} per page
+            </span>
+          </div>
+
+          <div className="divide-y divide-gray-800">
+            {paginated.data.map((item) => (
+              <div key={item.id} className="px-5 py-3 flex items-center gap-4">
+                <Badge
+                  label={item.type}
+                  variant={TYPE_BADGE[item.type] ?? "gray"}
+                />
+                <span className="flex-1 text-sm text-gray-200 font-medium">
+                  {item.name}
+                </span>
+                <span className="text-xs text-gray-400">{item.make}</span>
+                <span className="text-xs font-mono text-gray-500">
+                  {item.tag}
+                </span>
+                <span className="text-xs text-gray-500">
+                  {item.rack_id
+                    ? `Rack #${item.rack_id} · Slot ${item.slot_number}`
+                    : "Unassigned"}
+                </span>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    className="text-xs py-1 px-3"
+                    onClick={() => {
+                      setEditEquipment(item);
+                      setShowModal(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="danger"
+                    className="text-xs py-1 px-3"
+                    onClick={() => setConfirmDelete(item)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="px-5 py-4 border-t border-gray-800">
+            <Pagination
+              page={page}
+              totalPages={paginated.totalPages}
+              onPageChange={setPage}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Unassigned equipment table */}
       {unassigned.length > 0 && activeRackId === null && (
